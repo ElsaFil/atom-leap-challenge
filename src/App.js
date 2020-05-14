@@ -6,8 +6,6 @@ import GraphContainer from "./components/GraphContainer";
 export default function App() {
   const [rawData, setRawData] = useState(null);
   const [dataByCategory, setDataByCategory] = useState(null);
-  const [fundingByCategory, setFundingByCategory] = useState(null);
-  const [roundsByCategory, setRoundsByCategory] = useState(null);
   const [aggregatedDataByCategory, setAggregatedDataByCategory] = useState(
     null
   );
@@ -49,26 +47,20 @@ export default function App() {
       return;
     }
 
-    let categoriesFunding = {};
-    let categoriesRounds = {};
     let aggregatedData = [];
     for (let category in dataByCategory) {
       let fundingTotal = dataByCategory[category].reduce((acc, obj) => {
         return acc + obj.fundingAmount;
       }, 0);
-      categoriesFunding[category] = fundingTotal;
 
       let rounds = dataByCategory[category].length;
-      categoriesRounds[category] = rounds;
 
       aggregatedData.push({
         category: category,
-        funding: fundingTotal,
+        funding: fundingTotal / 1000000,
         rounds: rounds,
       });
     }
-    setFundingByCategory(categoriesFunding);
-    setRoundsByCategory(categoriesRounds);
     setAggregatedDataByCategory(aggregatedData);
   }, [dataByCategory]);
 

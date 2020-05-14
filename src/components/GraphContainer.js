@@ -4,10 +4,27 @@ import React, { useState, useEffect } from "react";
 export default function GraphContainer(props) {
   const [dataForGraph, setDataForGraph] = useState(null);
   const [keysForGraph, setKeysForGraph] = useState(null);
+  const [legendForGraph, setLegendForGraph] = useState(null);
+
+  const Bubble = ({ x, y, width, height, color }) => {
+    return (
+      <circle
+        cx={x + width / 2}
+        cy={y + height / 2}
+        r={Math.min(width, height) / 2}
+        fill={color}
+      />
+    );
+  };
+  const Label = (d) => {
+    return d.value + " M";
+  };
 
   useEffect(() => {
     let key = props.selectedDataType === "volumes" ? "funding" : "rounds";
+    let legend = props.selectedDataType === "volumes" ? "Rounds" : "Funding";
     setKeysForGraph([key]);
+    setLegendForGraph(legend);
     setDataForGraph(props.data.aggregatedDataByCategory);
   }, [props]);
 
@@ -20,41 +37,11 @@ export default function GraphContainer(props) {
           indexBy="category"
           margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
           padding={0.3}
-          colors={{ scheme: "nivo" }}
-          defs={[
-            {
-              id: "dots",
-              type: "patternDots",
-              background: "inherit",
-              color: "#38bcb2",
-              size: 4,
-              padding: 1,
-              stagger: true,
-            },
-            {
-              id: "lines",
-              type: "patternLines",
-              background: "inherit",
-              color: "#eed312",
-              rotation: -45,
-              lineWidth: 6,
-              spacing: 10,
-            },
-          ]}
-          fill={[
-            {
-              match: {
-                id: "fries",
-              },
-              id: "dots",
-            },
-            {
-              match: {
-                id: "sandwich",
-              },
-              id: "lines",
-            },
-          ]}
+          colors={{ scheme: "set2" }}
+          colorBy="index"
+          groupMode="stacked"
+          defs={[]}
+          fill={[]}
           borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
           axisTop={null}
           axisRight={null}
@@ -62,7 +49,7 @@ export default function GraphContainer(props) {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: "country",
+            legend: "Category",
             legendPosition: "middle",
             legendOffset: 32,
           }}
@@ -70,16 +57,18 @@ export default function GraphContainer(props) {
             tickSize: 5,
             tickPadding: 5,
             tickRotation: 0,
-            legend: "food",
+            legend: [legendForGraph],
             legendPosition: "middle",
             legendOffset: -40,
           }}
-          labelSkipWidth={12}
+          barComponent={Bubble}
+          label={Label}
+          labelSkipWidth={19}
           labelSkipHeight={12}
           labelTextColor={{ from: "color", modifiers: [["darker", 1.6]] }}
           legends={[
             {
-              dataFrom: "keys",
+              dataFrom: "indexes",
               anchor: "bottom-right",
               direction: "column",
               justify: false,
