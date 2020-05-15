@@ -1,4 +1,4 @@
-// @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap");
 @import "./colors.scss";
 
 .App {
@@ -6,6 +6,29 @@
   font-family: "Montserrat", sans-serif;
 }
 
+h1 {
+  color: $darkGray;
+}
 .graph-container {
+  margin: 10px auto;
   height: 50vh;
+}
+
+.table-container {
+  margin: 30px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.table-container table {
+  border: 1px solid $darkGray;
+  border-collapse: collapse;
+  color: $darkGray;
+}
+
+.table-container th,
+.table-container td {
+  border: 1px solid $darkGray;
+  padding: 6px;
 }

@@ -13,11 +13,9 @@ export default function GraphContainer(props) {
         cy={y + height / 2}
         r={Math.min(width, height) / 2}
         fill={color}
+        onClick={handleClick}
       />
     );
-  };
-  const Label = (d) => {
-    return d.value + " M";
   };
 
   useEffect(() => {
@@ -28,10 +26,15 @@ export default function GraphContainer(props) {
     setDataForGraph(props.data.aggregatedDataByCategory);
   }, [props]);
 
+  function handleClick(obj, event) {
+    props.toggleTableCategory(obj.indexValue);
+  }
+
   return (
     <div className="graph-container">
       {dataForGraph && keysForGraph && (
         <ResponsiveBar
+          onClick={handleClick}
           data={dataForGraph}
           keys={keysForGraph}
           indexBy="category"
@@ -61,11 +64,11 @@ export default function GraphContainer(props) {
             legendPosition: "middle",
             legendOffset: -40,
           }}
-          barComponent={Bubble}
-          label={Label}
+          // barComponent={Bubble}
+          // label={(d) => d.value + " M"}
           labelSkipWidth={19}
           labelSkipHeight={12}
-          labelTextColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+          // labelTextColor={{ from: "color", modifiers: [["darker", 1.6]] }}
           legends={[
             {
               dataFrom: "indexes",
@@ -90,6 +93,7 @@ export default function GraphContainer(props) {
               ],
             },
           ]}
+          isInteractive={true}
           animate={true}
           motionStiffness={90}
           motionDamping={15}

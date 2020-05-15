@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./styles/App.scss";
 import axios from "axios";
 import GraphContainer from "./components/GraphContainer";
+import TableContainer from "./components/TableContainer";
 
 export default function App() {
   const [rawData, setRawData] = useState(null);
@@ -10,6 +11,7 @@ export default function App() {
     null
   );
   const [selectedDataType, setSelectedDataType] = useState("volumes");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -64,6 +66,14 @@ export default function App() {
     setAggregatedDataByCategory(aggregatedData);
   }, [dataByCategory]);
 
+  function toggleTableCategory(category) {
+    if (selectedCategory === category) {
+      setSelectedCategory(null);
+      return;
+    }
+    setSelectedCategory(category);
+  }
+
   return (
     <div className="App">
       <h1>Funding By Industry - Analytics</h1>
@@ -72,7 +82,7 @@ export default function App() {
       <select
         id="dataType"
         onChange={(event) => {
-          console.log(event.target.value);
+          toggleTableCategory(null);
           setSelectedDataType(event.target.value);
         }}
       >
@@ -85,7 +95,12 @@ export default function App() {
           dataByCategory: dataByCategory,
           aggregatedDataByCategory: aggregatedDataByCategory,
         }}
-      ></GraphContainer>
+        toggleTableCategory={toggleTableCategory}
+      />
+
+      {selectedCategory && (
+        <TableContainer data={dataByCategory[selectedCategory]} />
+      )}
     </div>
   );
 }
