@@ -81,6 +81,7 @@ export default function App() {
 
       <select
         id="dataType"
+        data-testid="selectDataType"
         onChange={(event) => {
           toggleTableCategory(null);
           setSelectedDataType(event.target.value);

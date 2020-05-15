@@ -31,7 +31,7 @@ export default function GraphContainer(props) {
   }
 
   return (
-    <div className="graph-container">
+    <div className="graph-container" data-testid="graph-container">
       {dataForGraph && keysForGraph && (
         <ResponsiveBar
           onClick={handleClick}

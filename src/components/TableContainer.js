@@ -2,7 +2,7 @@ import React from "react";
 
 export default function TableContainer(props) {
   return (
-    <div className="table-container">
+    <div className="table-container" data-testid="table-container">
       <table>
         <thead>
           <tr>
